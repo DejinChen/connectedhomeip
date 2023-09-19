@@ -48,358 +48,62 @@ if (NOT CMAKE_BUILD_EARLY_EXPANSION)
     endif()
 endif()
 
-set(SRCS_LIST
-                .
-                ${MATTER_SDK_PATH}/src/app/AttributeAccessInterface.cpp
-                ${MATTER_SDK_PATH}/src/app/AttributePathExpandIterator.cpp
-                ${MATTER_SDK_PATH}/src/app/BufferedReadCallback.cpp
-                ${MATTER_SDK_PATH}/src/app/CASEClient.cpp
-                ${MATTER_SDK_PATH}/src/app/CASESessionManager.cpp
-                ${MATTER_SDK_PATH}/src/app/ChunkedWriteCallback.cpp
-                ${MATTER_SDK_PATH}/src/app/ClusterStateCache.cpp
-                ${MATTER_SDK_PATH}/src/app/CommandHandler.cpp
-                ${MATTER_SDK_PATH}/src/app/CommandSender.cpp
-                ${MATTER_SDK_PATH}/src/app/DefaultAttributePersistenceProvider.cpp
-                ${MATTER_SDK_PATH}/src/app/DeferredAttributePersistenceProvider.cpp
-                ${MATTER_SDK_PATH}/src/app/DeviceProxy.cpp
-                ${MATTER_SDK_PATH}/src/app/EventManagement.cpp
-                ${MATTER_SDK_PATH}/src/app/FailSafeContext.cpp
-                ${MATTER_SDK_PATH}/src/app/InteractionModelEngine.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ArrayBuilder.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ArrayParser.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributeDataIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributeDataIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributePathIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributePathIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributeReportIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributeReportIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributeStatusIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/AttributeStatusIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/Builder.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ClusterPathIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/CommandDataIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/CommandPathIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/CommandStatusIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/DataVersionFilterIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/DataVersionFilterIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventDataIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventFilterIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventFilterIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventPathIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventPathIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventReportIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventReportIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/EventStatusIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/InvokeRequestMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/InvokeRequests.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/InvokeResponseIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/InvokeResponseIBs.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/InvokeResponseMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ListBuilder.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ListParser.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/MessageBuilder.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/MessageDefHelper.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/MessageParser.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/Parser.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ReadRequestMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/ReportDataMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/StatusIB.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/StatusResponseMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/StructBuilder.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/StructParser.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/SubscribeRequestMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/SubscribeResponseMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/TimedRequestMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/WriteRequestMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/MessageDef/WriteResponseMessage.cpp
-                ${MATTER_SDK_PATH}/src/app/OperationalSessionSetup.cpp
-                ${MATTER_SDK_PATH}/src/app/ReadClient.cpp
-                ${MATTER_SDK_PATH}/src/app/ReadHandler.cpp
-                ${MATTER_SDK_PATH}/src/app/RequiredPrivilege.cpp
-                ${MATTER_SDK_PATH}/src/app/StatusResponse.cpp
-                ${MATTER_SDK_PATH}/src/app/TimedHandler.cpp
-                ${MATTER_SDK_PATH}/src/app/TimedRequest.cpp
-                ${MATTER_SDK_PATH}/src/app/WriteClient.cpp
-                ${MATTER_SDK_PATH}/src/app/WriteHandler.cpp
-                ${MATTER_SDK_PATH}/src/app/reporting/Engine.cpp
-                ${MATTER_SDK_PATH}/src/app/reporting/ReportSchedulerImpl.cpp
-                ${MATTER_SDK_PATH}/src/app/reporting/SynchronizedReportSchedulerImpl.cpp
-                ${MATTER_SDK_PATH}/src/app/SimpleSubscriptionResumptionStorage.cpp
-                ${MATTER_SDK_PATH}/src/ble/BLEEndPoint.cpp
-                ${MATTER_SDK_PATH}/src/ble/BleError.cpp
-                ${MATTER_SDK_PATH}/src/ble/BleLayer.cpp
-                ${MATTER_SDK_PATH}/src/ble/BleUUID.cpp
-                ${MATTER_SDK_PATH}/src/ble/BtpEngine.cpp
-                ${MATTER_SDK_PATH}/src/crypto/CHIPCryptoPAL.cpp
-                ${MATTER_SDK_PATH}/src/crypto/PersistentStorageOperationalKeystore.cpp
-                ${MATTER_SDK_PATH}/src/crypto/RandUtils.cpp
-                ${MATTER_SDK_PATH}/src/crypto/RawKeySessionKeystore.cpp
-                ${MATTER_SDK_PATH}/src/inet/IPAddress-StringFuncts.cpp
-                ${MATTER_SDK_PATH}/src/inet/IPAddress.cpp
-                ${MATTER_SDK_PATH}/src/inet/IPPacketInfo.cpp
-                ${MATTER_SDK_PATH}/src/inet/IPPrefix.cpp
-                ${MATTER_SDK_PATH}/src/inet/InetArgParser.cpp
-                ${MATTER_SDK_PATH}/src/inet/InetError.cpp
-                ${MATTER_SDK_PATH}/src/inet/InetInterface.cpp
-                ${MATTER_SDK_PATH}/src/inet/TCPEndPoint.cpp
-                ${MATTER_SDK_PATH}/src/inet/TCPEndPointImplLwIP.cpp
-                ${MATTER_SDK_PATH}/src/inet/UDPEndPoint.cpp
-                ${MATTER_SDK_PATH}/src/inet/UDPEndPointImplLwIP.cpp
-                ${MATTER_SDK_PATH}/src/lib/asn1/ASN1Error.cpp
-                ${MATTER_SDK_PATH}/src/lib/asn1/ASN1OID.cpp
-                ${MATTER_SDK_PATH}/src/lib/asn1/ASN1Reader.cpp
-                ${MATTER_SDK_PATH}/src/lib/asn1/ASN1Time.cpp
-                ${MATTER_SDK_PATH}/src/lib/asn1/ASN1Writer.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/CHIPError.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/CHIPKeyIds.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/OTAImageHeader.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVCircularBuffer.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVDebug.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVReader.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVTags.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVUpdater.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVUtilities.cpp
-                ${MATTER_SDK_PATH}/src/lib/core/TLVWriter.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/IPAddressSorter.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/ServiceNaming.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/TxtFields.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/ActiveResolveAttempts.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/Advertiser_ImplMinimalMdns.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/IncrementalResolve.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/MinimalMdnsServer.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/Resolver_ImplMinimalMdns.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/Base64.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/BufferReader.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/BufferWriter.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/BytesCircularBuffer.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/BytesToHex.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/CHIPArgParser.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/CHIPMem.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/CHIPPlatformMemory.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/ErrorStr.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/FibonacciUtils.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/FixedBufferAllocator.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/IniEscaping.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/PersistentStorageAudit.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/Pool.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/PrivateHeap.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/SerializableIntegerSet.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/StringBuilder.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/ThreadOperationalDataset.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/TimeUtils.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/ZclString.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/logging/CHIPLogging.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/verhoeff/Verhoeff.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/verhoeff/Verhoeff10.cpp
-                ${MATTER_SDK_PATH}/src/lib/support/CHIPMem-Malloc.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ApplicationExchangeDispatch.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ErrorCategory.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ExchangeContext.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ExchangeMessageDispatch.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ExchangeMgr.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ReliableMessageContext.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ReliableMessageMgr.cpp
-                ${MATTER_SDK_PATH}/src/messaging/ReliableMessageProtocolConfig.cpp
-                ${MATTER_SDK_PATH}/src/platform/CommissionableDataProvider.cpp
-                ${MATTER_SDK_PATH}/src/platform/DeviceControlServer.cpp
-                ${MATTER_SDK_PATH}/src/platform/DeviceInfoProvider.cpp
-                ${MATTER_SDK_PATH}/src/platform/DeviceInstanceInfoProvider.cpp
-                ${MATTER_SDK_PATH}/src/platform/DiagnosticDataProvider.cpp
-                ${MATTER_SDK_PATH}/src/platform/Entropy.cpp
-                ${MATTER_SDK_PATH}/src/platform/GeneralUtils.cpp
-                ${MATTER_SDK_PATH}/src/platform/Globals.cpp
-                ${MATTER_SDK_PATH}/src/platform/LockTracker.cpp
-                ${MATTER_SDK_PATH}/src/platform/PersistedStorage.cpp
-                ${MATTER_SDK_PATH}/src/platform/PlatformEventSupport.cpp
-                ${MATTER_SDK_PATH}/src/protocols/Protocols.cpp
-                ${MATTER_SDK_PATH}/src/protocols/echo/EchoClient.cpp
-                ${MATTER_SDK_PATH}/src/protocols/echo/EchoServer.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/MessageCounterManager.cpp
-                ${MATTER_SDK_PATH}/src/protocols/user_directed_commissioning/UserDirectedCommissioningClient.cpp
-                ${MATTER_SDK_PATH}/src/protocols/user_directed_commissioning/UserDirectedCommissioningServer.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/Base38Decode.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/Base38Encode.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/ManualSetupPayloadGenerator.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/ManualSetupPayloadParser.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/QRCodeSetupPayloadGenerator.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/QRCodeSetupPayloadParser.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/SetupPayload.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/SetupPayloadHelper.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemClock.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemError.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemLayer.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemMutex.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemPacketBuffer.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemStats.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemTimer.cpp
-                ${MATTER_SDK_PATH}/src/system/TLVPacketBufferBackingStore.cpp
-                ${MATTER_SDK_PATH}/src/system/WakeEvent.cpp
-                ${MATTER_SDK_PATH}/src/system/SystemLayerImplFreeRTOS.cpp
-                ${MATTER_SDK_PATH}/src/transport/CryptoContext.cpp
-                ${MATTER_SDK_PATH}/src/transport/GroupPeerMessageCounter.cpp
-                ${MATTER_SDK_PATH}/src/transport/SecureMessageCodec.cpp
-                ${MATTER_SDK_PATH}/src/transport/SecureSession.cpp
-                ${MATTER_SDK_PATH}/src/transport/SecureSessionTable.cpp
-                ${MATTER_SDK_PATH}/src/transport/Session.cpp
-                ${MATTER_SDK_PATH}/src/transport/SessionHolder.cpp
-                ${MATTER_SDK_PATH}/src/transport/SessionManager.cpp
-                ${MATTER_SDK_PATH}/src/transport/TransportMgrBase.cpp
-                ${MATTER_SDK_PATH}/src/controller/AbstractDnssdDiscoveryController.cpp
-                ${MATTER_SDK_PATH}/src/controller/AutoCommissioner.cpp
-                ${MATTER_SDK_PATH}/src/controller/CHIPCommissionableNodeController.cpp
-                ${MATTER_SDK_PATH}/src/controller/CHIPDeviceController.cpp
-                ${MATTER_SDK_PATH}/src/controller/CHIPDeviceControllerFactory.cpp
-                ${MATTER_SDK_PATH}/src/controller/CommissioneeDeviceProxy.cpp
-                ${MATTER_SDK_PATH}/src/controller/CommissionerDiscoveryController.cpp
-                ${MATTER_SDK_PATH}/src/controller/CommissioningDelegate.cpp
-                ${MATTER_SDK_PATH}/src/controller/CommissioningWindowOpener.cpp
-                ${MATTER_SDK_PATH}/src/controller/CurrentFabricRemover.cpp
-                ${MATTER_SDK_PATH}/src/controller/EmptyDataModelHandler.cpp
-                ${MATTER_SDK_PATH}/src/controller/ExampleOperationalCredentialsIssuer.cpp
-                ${MATTER_SDK_PATH}/src/controller/SetUpCodePairer.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/MainLoopESP32.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/streamer_esp32.cpp
-                ${MATTER_SDK_PATH}/src/credentials/attestation_verifier/DacOnlyPartialAttestationVerifier.cpp
-                ${MATTER_SDK_PATH}/src/credentials/attestation_verifier/DefaultDeviceAttestationVerifier.cpp
-                ${MATTER_SDK_PATH}/src/access/AccessControl.cpp
-                ${MATTER_SDK_PATH}/src/access/examples/ExampleAccessControlDelegate.cpp
-                ${MATTER_SDK_PATH}/src/access/examples/PermissiveAccessControlDelegate.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/AdditionalDataPayloadGenerator.cpp
-                ${MATTER_SDK_PATH}/src/setup_payload/AdditionalDataPayloadParser.cpp
-                ${MATTER_SDK_PATH}/src/crypto/CHIPCryptoPALmbedTLS.cpp
-                ${MATTER_SDK_PATH}/zzz_generated/app-common/app-common/zap-generated/cluster-objects.cpp
-                ${MATTER_SDK_PATH}/src/platform/SingletonConfigurationManager.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/ConfigurationManagerImpl.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/ConnectivityManagerImpl.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/DiagnosticDataProviderImpl.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/ESP32Config.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/ESP32Utils.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/KeyValueStoreManagerImpl.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/Logging.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/LwIPCoreLock.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/PlatformManagerImpl.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/SystemTimeSupport.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/nimble/BLEManagerImpl.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/nimble/ChipDeviceScanner.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/nimble/misc.c
-                ${MATTER_SDK_PATH}/src/platform/ESP32/nimble/peer.c
-                ${MATTER_SDK_PATH}/src/platform/ESP32/ConnectivityManagerImpl_WiFi.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/NetworkCommissioningDriver.cpp
-                ${MATTER_SDK_PATH}/src/platform/ESP32/route_hook/ESP32RouteHook.c
-                ${MATTER_SDK_PATH}/src/platform/ESP32/route_hook/ESP32RouteTable.c
-                ${MATTER_SDK_PATH}/src/app/icd/IcdManagementServer.cpp
-                ${MATTER_SDK_PATH}/src/app/icd/IcdMonitoringTable.cpp
-                ${MATTER_SDK_PATH}/src/protocols/interaction_model/StatusCode.cpp
-                ${MATTER_SDK_PATH}/src/lib/address_resolve/AddressResolve.cpp
-                ${MATTER_SDK_PATH}/src/lib/address_resolve/AddressResolve_DefaultImpl.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/Parser.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/RecordData.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/ResponseSender.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/Server.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/AddressPolicy.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/core/QName.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/core/QNameString.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/core/RecordWriter.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/responders/IP.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/responders/QueryResponder.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/records/IP.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/records/ResourceRecord.cpp
-                ${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/AddressPolicy_DefaultImpl.cpp
-                ${MATTER_SDK_PATH}/src/tracing/registry.cpp
-                ${MATTER_SDK_PATH}/src/credentials/CHIPCert.cpp
-                ${MATTER_SDK_PATH}/src/credentials/CHIPCertFromX509.cpp
-                ${MATTER_SDK_PATH}/src/credentials/CHIPCertToX509.cpp
-                ${MATTER_SDK_PATH}/src/credentials/CertificationDeclaration.cpp
-                ${MATTER_SDK_PATH}/src/credentials/DeviceAttestationConstructor.cpp
-                ${MATTER_SDK_PATH}/src/credentials/DeviceAttestationCredsProvider.cpp
-                ${MATTER_SDK_PATH}/src/credentials/FabricTable.cpp
-                ${MATTER_SDK_PATH}/src/credentials/GenerateChipX509Cert.cpp
-                ${MATTER_SDK_PATH}/src/credentials/GroupDataProviderImpl.cpp
-                ${MATTER_SDK_PATH}/src/credentials/LastKnownGoodTime.cpp
-                ${MATTER_SDK_PATH}/src/credentials/PersistentStorageOpCertStore.cpp
-                ${MATTER_SDK_PATH}/src/credentials/attestation_verifier/DeviceAttestationVerifier.cpp
-                ${MATTER_SDK_PATH}/src/credentials/examples/DeviceAttestationCredsExample.cpp
-                ${MATTER_SDK_PATH}/src/credentials/examples/ExampleDACs.cpp
-                ${MATTER_SDK_PATH}/src/credentials/examples/ExamplePAI.cpp
-                ${MATTER_SDK_PATH}/src/credentials/tests/CHIPAttCert_test_vectors.cpp
-                ${MATTER_SDK_PATH}/src/transport/raw/MessageHeader.cpp
-                ${MATTER_SDK_PATH}/src/transport/raw/TCP.cpp
-                ${MATTER_SDK_PATH}/src/transport/raw/UDP.cpp
-                ${MATTER_SDK_PATH}/src/transport/raw/BLE.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/CASEDestinationId.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/CASEServer.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/CASESession.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/DefaultSessionResumptionStorage.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/PASESession.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/PairingSession.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/SessionEstablishmentExchangeDispatch.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/SimpleSessionResumptionStorage.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/StatusReport.cpp
-                ${MATTER_SDK_PATH}/src/protocols/secure_channel/UnsolicitedStatusHandler.cpp
-                ${MATTER_SDK_PATH}/src/protocols/bdx/BdxMessages.cpp
-                ${MATTER_SDK_PATH}/src/protocols/bdx/BdxTransferSession.cpp
-                ${MATTER_SDK_PATH}/src/protocols/bdx/BdxUri.cpp
-                ${MATTER_SDK_PATH}/src/protocols/bdx/TransferFacilitator.cpp
-                ${MATTER_SDK_PATH}/src/app/server/AclStorage.cpp
-                ${MATTER_SDK_PATH}/src/app/server/CommissioningWindowManager.cpp
-                ${MATTER_SDK_PATH}/src/app/server/DefaultAclStorage.cpp
-                ${MATTER_SDK_PATH}/src/app/server/Dnssd.cpp
-                ${MATTER_SDK_PATH}/src/app/server/EchoHandler.cpp
-                ${MATTER_SDK_PATH}/src/app/server/OnboardingCodesUtil.cpp
-                ${MATTER_SDK_PATH}/src/app/server/Server.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/Engine.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/streamer.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Base64.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Help.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Meta.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Config.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Device.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/OnboardingCodes.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/WiFi.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/BLE.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Dns.cpp
-                ${MATTER_SDK_PATH}/src/lib/shell/commands/Ota.cpp
-                                
-                # "${MATTER_SDK_PATH}/zzz_generated/app-common"
-                # "${MATTER_SDK_PATH}/third_party/nlfaultinjection/repo/include"
-                # "${MATTER_SDK_PATH}/src"
-)
-
 set(SRC_DIRS_LIST
                     "."
-                    # "${MATTER_SDK_PATH}/third_party/nlfaultinjection/repo/src"
-                    # "${MATTER_SDK_PATH}/src/lib/core"
-                    # "${MATTER_SDK_PATH}/src/credentials"
-                    # "${MATTER_SDK_PATH}/src/access/examples"
-                    # "${MATTER_SDK_PATH}/src/messaging"
-                    # "${MATTER_SDK_PATH}/src/transport"
-                    # "${MATTER_SDK_PATH}/src/tracing"
-                    # "${MATTER_SDK_PATH}/src/platform/ESP32"
-                    # "${MATTER_SDK_PATH}/src/platform"
-                    # "${MATTER_SDK_PATH}/src/lib/dnssd"
-                    # "${MATTER_SDK_PATH}/src/setup_payload"
-                    # "${MATTER_SDK_PATH}/src/crypto"
-                    # # "${MATTER_SDK_PATH}/src/ble"
-                    # # "${MATTER_SDK_PATH}/src/inet"
-                    # "${MATTER_SDK_PATH}/src/lib/core"
-                    # "${MATTER_SDK_PATH}/src/lib/support/logging"
-                    # "${MATTER_SDK_PATH}/src/lib/support"
-                    # "${MATTER_SDK_PATH}/src/system"
-                    # "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
-                    # # "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid"
-                    # "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook"
-                    # "${MATTER_SDK_PATH}/src/platform/OpenThread/"
+                    "${MATTER_SDK_PATH}/src/access"
+                    "${MATTER_SDK_PATH}/src/access/examples"
                     "${MATTER_SDK_PATH}/src/app"
+                    "${MATTER_SDK_PATH}/src/app/icd/"
+                    "${MATTER_SDK_PATH}/src/app/MessageDef"
+                    "${MATTER_SDK_PATH}/src/app/reporting"
+                    "${MATTER_SDK_PATH}/src/app/server"
                     "${MATTER_SDK_PATH}/src/ble"
+                    "${MATTER_SDK_PATH}/src/controller"
+                    "${MATTER_SDK_PATH}/src/credentials"
+                    "${MATTER_SDK_PATH}/src/credentials/attestation_verifier"
+                    "${MATTER_SDK_PATH}/src/credentials/examples"
+                    "${MATTER_SDK_PATH}/src/credentials/tests"
                     "${MATTER_SDK_PATH}/src/crypto"
-
+                    # "${MATTER_SDK_PATH}/src/darwin"
+                    # "${MATTER_SDK_PATH}/src/include"
+                    "${MATTER_SDK_PATH}/src/inet"
+                    "${MATTER_SDK_PATH}/src/lib/address_resolve"
+                    "${MATTER_SDK_PATH}/src/lib/asn1"
+                    "${MATTER_SDK_PATH}/src/lib/core"
+                    "${MATTER_SDK_PATH}/src/lib/dnssd"
+                    "${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns"
+                    "${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/core"
+                    "${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/records"
+                    "${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/responders"
+                    "${MATTER_SDK_PATH}/src/lib/support"
+                    "${MATTER_SDK_PATH}/src/lib/support/logging"
+                    "${MATTER_SDK_PATH}/src/lib/support/verhoeff"
+                    "${MATTER_SDK_PATH}/src/lib/shell"
+                    "${MATTER_SDK_PATH}/src/lib/shell/commands"
+                    # "${MATTER_SDK_PATH}/src/lwip"
+                    "${MATTER_SDK_PATH}/src/messaging"
+                    "${MATTER_SDK_PATH}/src/platform"
+                    "${MATTER_SDK_PATH}/src/platform/ESP32"
+                    "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
+                    # "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid"
+                    "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook"
+                    "${MATTER_SDK_PATH}/src/platform/OpenThread/"
+                    "${MATTER_SDK_PATH}/src/protocols"
+                    "${MATTER_SDK_PATH}/src/protocols/bdx"
+                    "${MATTER_SDK_PATH}/src/protocols/echo"
+                    "${MATTER_SDK_PATH}/src/protocols/secure_channel"
+                    "${MATTER_SDK_PATH}/src/protocols/user_directed_commissioning"
+                    # "${MATTER_SDK_PATH}/src/pybindings"
+                    "${MATTER_SDK_PATH}/src/setup_payload"
+                    "${MATTER_SDK_PATH}/src/system"
+                    "${MATTER_SDK_PATH}/src/tracing"
+                    "${MATTER_SDK_PATH}/src/transport"
+                    "${MATTER_SDK_PATH}/src/transport/raw"
+                    "${MATTER_SDK_PATH}/zzz_generated/app-common/app-common/zap-generated"
 )
 
 set(INCLUDE_DIRS_LIST
                         "."
-                        "${MATTER_SDK_PATH}/zzz_generated/app-common"
-                        "${MATTER_SDK_PATH}/third_party/nlfaultinjection/repo/include"
-                        "${MATTER_SDK_PATH}/out/host/gen/include"
                         "${MATTER_SDK_PATH}/src"
                         "${MATTER_SDK_PATH}/src/access"
                         "${MATTER_SDK_PATH}/src/access/examples"
@@ -412,6 +116,7 @@ set(INCLUDE_DIRS_LIST
                         "${MATTER_SDK_PATH}/src/controller"
                         "${MATTER_SDK_PATH}/src/credentials"
                         "${MATTER_SDK_PATH}/src/credentials/attestation_verifier"
+                        "${MATTER_SDK_PATH}/src/credentials/tests"
                         "${MATTER_SDK_PATH}/src/crypto"
                         # "${MATTER_SDK_PATH}/src/darwin"
                         "${MATTER_SDK_PATH}/src/include"
@@ -447,26 +152,95 @@ set(INCLUDE_DIRS_LIST
                         "${MATTER_SDK_PATH}/src/tracing"
                         "${MATTER_SDK_PATH}/src/transport"
                         "${MATTER_SDK_PATH}/src/transport/raw"
+
+                        # "${MATTER_SDK_PATH}/out/host/gen/include"
+                        "${MATTER_SDK_PATH}/third_party/nlfaultinjection/repo/include"
+                        "${MATTER_SDK_PATH}/third_party/nlassert/repo/include"
+                        "${MATTER_SDK_PATH}/third_party/nlio/repo/include"
+                        "${MATTER_SDK_PATH}/zzz_generated/app-common"
 )
 
-set(EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/ConnectivityManagerImpl_Ethernet.cpp"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/NetworkCommissioningDriver_Ethernet.cpp"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/ConnectivityManagerImpl_WiFi.cpp"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/WiFiDnssdImpl.cpp"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/WiFiDnssdImpl.h"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/NetworkCommissioningDriver.cpp"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/NetworkCommissioningDriver.h"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/ESP32CHIPCryptoPAL.cpp"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook/ESP32RouteHook.c"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook/ESP32RouteHook.h"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook/ESP32RouteTable.c"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook/ESP32RouteTable.h"
-                      "${MATTER_SDK_PATH}/src/platform/OpenThread/GenericThreadStackManagerImpl_OpenThread_LwIP.cpp"
-                      "${MATTER_SDK_PATH}/src/lib/dnssd/Advertiser_ImplMinimalMdns.cpp"
+set(EXCLUDE_SRCS_LIST 
+                      "${MATTER_SDK_PATH}/src/app/icd/ICDEventManager.cpp"
+                      "${MATTER_SDK_PATH}/src/app/icd/ICDManager.cpp"
+                      "${MATTER_SDK_PATH}/src/controller/ExamplePersistentStorage.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/attestation_verifier/FileAttestationTrustStore.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/CHIPCert_error_test_vectors.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/CHIPCert_test_vectors.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/CHIPCert_unit_test_vectors.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/FuzzChipCert.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestCertificationDeclaration.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestChipCert.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestCommissionerDUTVectors.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestDeviceAttestationConstruction.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestDeviceAttestationCredentials.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestFabricTable.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestGroupDataProvider.cpp"
+                      "${MATTER_SDK_PATH}/src/credentials/tests/TestPersistentStorageOpCertStore.cpp"
+                      "${MATTER_SDK_PATH}/src/crypto/CHIPCryptoPALOpenSSL.cpp"
+                      "${MATTER_SDK_PATH}/src/crypto/CHIPCryptoPALPSA.cpp"
+                      "${MATTER_SDK_PATH}/src/crypto/PSAOperationalKeystore.cpp"
+                      "${MATTER_SDK_PATH}/src/crypto/PSASessionKeystore.cpp"
+                      "${MATTER_SDK_PATH}/src/inet/InetFaultInjection.cpp"
+                      "${MATTER_SDK_PATH}/src/inet/TCPEndPointImplOpenThread.cpp"
+                      "${MATTER_SDK_PATH}/src/inet/TCPEndPointImplSockets.cpp"
+                      "${MATTER_SDK_PATH}/src/inet/UDPEndPointImplNetworkFramework.cpp"
+                      "${MATTER_SDK_PATH}/src/inet/UDPEndPointImplOpenThread.cpp"
+                      "${MATTER_SDK_PATH}/src/inet/UDPEndPointImplSockets.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/address_resolve/tool.cpp"
                       "${MATTER_SDK_PATH}/src/lib/dnssd/Advertiser_ImplNone.cpp"
-                      # "${MATTER_SDK_PATH}/src/platform/OpenThreadDnssdImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/dnssd/Discovery_ImplPlatform.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/dnssd/Resolver_ImplNone.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/AddressPolicy_LibNlImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/dnssd/minimal_mdns/Logging.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/support/UnitTestRegistration.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/support/UnitTestUtils.cpp"
                       "${MATTER_SDK_PATH}/src/lib/support/JniReferences.cpp"
                       "${MATTER_SDK_PATH}/src/lib/support/CHIPFaultInjection.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/support/CHIPMem-Simple.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/MainLoopAmeba.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/MainLoopCYW30739.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/MainLoopDefault.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/MainLoopMW320.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/MainLoopSilabs.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/MainLoopZephyr.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_ameba.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_asr.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_bouffalolab.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_cc13x2_26x2.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_cc13x4_26x4.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_cyw30739.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_k32w.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_mbed.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_mt793x.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_mw320.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_openiotsdk.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_qpg.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_silabs.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_stdio.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/streamer_zephyr.cpp"
+                      "${MATTER_SDK_PATH}/src/lib/shell/commands/NFC.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/DeviceSafeQueue.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/SyscallStubs.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/ConnectivityManagerImpl_Ethernet.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/DnssdImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/ESP32CHIPCryptoPAL.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/ESP32DeviceInfoProvider.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/ESP32FactoryDataProvider.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/ESP32SecureCertDACProvider.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/NetworkCommissioningDriver_Ethernet.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/OpenthreadLauncher.c"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/OTAImageProcessorImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/ThreadStackManagerImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/WiFiDnssdImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/OpenThread/DnssdImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/OpenThread/GenericNetworkCommissioningThreadDriver.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/OpenThread/GenericThreadStackManagerImpl_OpenThread_LwIP.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/OpenThread/OpenThreadDnssdImpl.cpp"
+                      "${MATTER_SDK_PATH}/src/platform/OpenThread/OpenThreadUtils.cpp"
+                      "${MATTER_SDK_PATH}/src/system/SystemFaultInjection.cpp"
+                      "${MATTER_SDK_PATH}/src/system/SystemLayerImplSelect.cpp"
+                      "${MATTER_SDK_PATH}/src/transport/TraceMessage.cpp"
                       )
 
 set(PTIV_INCLUDE_DIRS_LIST "${MATTER_SDK_PATH}/src")
@@ -477,64 +251,18 @@ set(REQUIRES_LIST )
 # SRCS                 ${SRCS_LIST}
 # PRIV_INCLUDE_DIRS    ${PTIV_INCLUDE_DIRS_LIST}
 
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/app/AppBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/app/AppBuildConfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/asn1/ASN1OID.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/asn1/ASN1OID.h)
-        
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/ble/BleBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/ble/BleBuildConfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/core/CHIPBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/core/CHIPBuildConfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/crypto/CryptoBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/crypto/CryptoBuildConfig.h)
-                    
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/inet/InetBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/inet/InetBuildConfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/lwip/lwip_buildconfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/lwip/lwip_buildconfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/platform/CHIPDeviceBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/platform/CHIPDeviceBuildConfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/setup_payload/CHIPAdditionalDataPayloadBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/setup_payload/CHIPAdditionalDataPayloadBuildConfig.h)
-                    
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/system/SystemBuildConfig.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/system/SystemBuildConfig.h)
-
-configure_file(
-                ${CMAKE_CURRENT_LIST_DIR}/matter/tracing/build_config.h.in
-                ${CMAKE_CURRENT_LIST_DIR}/matter/tracing/build_config.h)
-
-
-list(APPEND INCLUDE_DIRS_LIST "${MATTER_SDK_PATH}/config/esp32/components/chip/")
-list(APPEND INCLUDE_DIRS_LIST "${MATTER_SDK_PATH}/third_party/nlassert/repo/include"
-                              "${MATTER_SDK_PATH}/third_party/nlio/repo/include"
-                              "${MATTER_SDK_PATH}/third_party/boringssl/repo/src/include") 
+list(APPEND INCLUDE_DIRS_LIST "${CMAKE_CURRENT_BINARY_DIR}")
+# list(APPEND INCLUDE_DIRS_LIST "${MATTER_SDK_PATH}/config/esp32/components/chip/")
+# list(APPEND INCLUDE_DIRS_LIST "${MATTER_SDK_PATH}/third_party/nlassert/repo/include"
+#                               "${MATTER_SDK_PATH}/third_party/nlio/repo/include"
+#                               "${MATTER_SDK_PATH}/third_party/boringssl/repo/src/include") 
 
 idf_component_register(
-                       SRCS                 ${SRCS_LIST}
-                    #    SRC_DIRS             ${SRC_DIRS_LIST}
-                    #   EXCLUDE_SRCS         ${EXCLUDE_SRCS_LIST}
+                       SRC_DIRS             ${SRC_DIRS_LIST}
+                       EXCLUDE_SRCS         ${EXCLUDE_SRCS_LIST}
                        INCLUDE_DIRS         ${INCLUDE_DIRS_LIST}
-                       REQUIRES             ${CHIP_REQUIRE_COMPONENTS})
-                    #    PRIV_REQUIRES        ${CHIP_REQUIRE_COMPONENTS}
-                    #    REQUIRES             ${REQUIRES_LIST})
+                       PRIV_REQUIRES        ${CHIP_REQUIRE_COMPONENTS}
+                       REQUIRES             ${REQUIRES_LIST})
 
 add_definitions(
                 "-DCHIP_ADDRESS_RESOLVE_IMPL_INCLUDE_HEADER=<lib/address_resolve/AddressResolve_DefaultImpl.h>"
@@ -577,7 +305,10 @@ chip_gn_arg_append("esp32_cpu"             "\"esp32\"")
 chip_gn_arg_bool("is_debug"                ${is_debug})
 
 if (CONFIG_CHIP_CONFIG_IM_PRETTY_PRINT)
-    chip_gn_arg_bool("enable_im_pretty_print" "true")
+    # chip_gn_arg_bool("enable_im_pretty_print" "true")
+    set(enable_im_pretty_print 1)
+else()
+    set(enable_im_pretty_print 0)
 endif()
 
 # Config the chip log level by IDF menuconfig
@@ -761,6 +492,50 @@ endif()
 
 set(args_gn_input "${CMAKE_CURRENT_BINARY_DIR}/args.gn.in")
 file(GENERATE OUTPUT "${args_gn_input}" CONTENT "${chip_gn_args}")
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/app/AppBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/app/AppBuildConfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/asn1/ASN1OID.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/asn1/ASN1OID.h)
+        
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/ble/BleBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/ble/BleBuildConfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/core/CHIPBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/core/CHIPBuildConfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/crypto/CryptoBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/crypto/CryptoBuildConfig.h)
+                    
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/inet/InetBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/inet/InetBuildConfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/lwip/lwip_buildconfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/lwip/lwip_buildconfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/platform/CHIPDeviceBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/platform/CHIPDeviceBuildConfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/setup_payload/CHIPAdditionalDataPayloadBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/setup_payload/CHIPAdditionalDataPayloadBuildConfig.h)
+                    
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/system/SystemBuildConfig.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/system/SystemBuildConfig.h)
+
+configure_file(
+                ${CMAKE_CURRENT_LIST_DIR}/matter/tracing/build_config.h.in
+                ${CMAKE_CURRENT_BINARY_DIR}/matter/tracing/build_config.h)
 
 # This generates the final args.in file to be fed to
 # CHIP build using GN build system. The necessary compile_commands.json
@@ -986,28 +761,28 @@ foreach(component ${components_to_link})
     endif()
 endforeach()
 
-target_link_libraries(${COMPONENT_LIB} INTERFACE -Wl,--start-group
-                                                ${chip_libraries}
-                                                $<TARGET_FILE:mbedcrypto> $<TARGET_FILE:mbedx509>
-                                                $<TARGET_FILE:${mbedtls_lib}>
-                                                -Wl,--end-group)
+# target_link_libraries(${COMPONENT_LIB} INTERFACE -Wl,--start-group
+#                                                 ${chip_libraries}
+#                                                 $<TARGET_FILE:mbedcrypto> $<TARGET_FILE:mbedx509>
+#                                                 $<TARGET_FILE:${mbedtls_lib}>
+#                                                 -Wl,--end-group)
 
-# Make the component dependent on our CHIP build
-# add_dependencies(${COMPONENT_LIB} chip_gn)
+# # Make the component dependent on our CHIP build
+# # add_dependencies(${COMPONENT_LIB} chip_gn)
 
-if(CONFIG_ENABLE_PW_RPC)
-    set(WRAP_FUNCTIONS esp_log_write esp_log_writev)
-    foreach(func ${WRAP_FUNCTIONS})
-        target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--wrap=${func}")
-    endforeach()
-endif()
+# if(CONFIG_ENABLE_PW_RPC)
+#     set(WRAP_FUNCTIONS esp_log_write esp_log_writev)
+#     foreach(func ${WRAP_FUNCTIONS})
+#         target_link_libraries(${COMPONENT_LIB} INTERFACE "-Wl,--wrap=${func}")
+#     endforeach()
+# endif()
 
-# Build Matter OTA image
-if (CONFIG_CHIP_OTA_IMAGE_BUILD)
-    chip_ota_image(chip-ota-image
-        INPUT_FILES ${BUILD_DIR}/${CMAKE_PROJECT_NAME}.bin
-        OUTPUT_FILE ${BUILD_DIR}/${CMAKE_PROJECT_NAME}-ota.bin
-    )
-    # Adding dependecy as app target so that this runs after images are ready
-    add_dependencies(chip-ota-image app)
-endif()
+# # Build Matter OTA image
+# if (CONFIG_CHIP_OTA_IMAGE_BUILD)
+#     chip_ota_image(chip-ota-image
+#         INPUT_FILES ${BUILD_DIR}/${CMAKE_PROJECT_NAME}.bin
+#         OUTPUT_FILE ${BUILD_DIR}/${CMAKE_PROJECT_NAME}-ota.bin
+#     )
+#     # Adding dependecy as app target so that this runs after images are ready
+#     add_dependencies(chip-ota-image app)
+# endif()
