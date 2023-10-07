@@ -44,7 +44,7 @@ set(SRC_DIRS_LIST "${MATTER_SDK_PATH}/src/access"
                   "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
                   # "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid"
                   "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook"
-                  "${MATTER_SDK_PATH}/src/platform/OpenThread/"
+                  "${MATTER_SDK_PATH}/src/platform/OpenThread"
                   "${MATTER_SDK_PATH}/src/protocols"
                   "${MATTER_SDK_PATH}/src/protocols/bdx"
                   "${MATTER_SDK_PATH}/src/protocols/echo"
@@ -97,7 +97,7 @@ set(INCLUDE_DIRS_LIST "."
                       "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
                       "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid"
                       "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook"
-                      "${MATTER_SDK_PATH}/src/platform/OpenThread/"
+                      "${MATTER_SDK_PATH}/src/platform/OpenThread"
                       "${MATTER_SDK_PATH}/src/protocols"
                       "${MATTER_SDK_PATH}/src/protocols/bdx"
                       "${MATTER_SDK_PATH}/src/protocols/echo"
@@ -422,6 +422,22 @@ endif()
 idf_build_set_property(C_COMPILE_OPTIONS "-Wno-error=uninitialized;-Wno-error=maybe-uninitialized;-Wno-format-nonliteral;-Wno-missing-field-initializers" APPEND)
 idf_build_set_property(CXX_COMPILE_OPTIONS "-Wno-error=uninitialized;-Wno-error=maybe-uninitialized;-Wno-format-nonliteral;-Wno-missing-field-initializers" APPEND)
 
+idf_component_get_property(freertos_dir freertos COMPONENT_DIR)
+target_include_directories(${COMPONENT_LIB} PRIVATE
+    "${freertos_dir}/include/freertos"
+    "${freertos_dir}/FreeRTOS-Kernel/include/freertos")
+
+target_include_directories(${COMPONENT_LIB} INTERFACE
+    "${MATTER_SDK_PATH}/examples/platform/esp32"
+    "${MATTER_SDK_PATH}/third_party/nlassert/repo/include"
+    "${MATTER_SDK_PATH}/third_party/nlio/repo/include"
+    "${CMAKE_CURRENT_BINARY_DIR}/src/include"
+    "${CMAKE_CURRENT_BINARY_DIR}/include"
+    "${CMAKE_CURRENT_BINARY_DIR}/gen/include"
+    "${MATTER_SDK_PATH}/config/esp32/${CONFIG_CHIP_EXTERNAL_PLATFORM_DIR}"
+    "${MATTER_SDK_PATH}/config/esp32/${CONFIG_CHIP_EXTERNAL_PLATFORM_DIR}/../../"
+)
+
 idf_component_get_property(main_lib main COMPONENT_LIB)
 set(chip_libraries $<TARGET_FILE:${main_lib}>)
 
@@ -486,6 +502,15 @@ configure_file(${CMAKE_CURRENT_LIST_DIR}/include/matter/tracing/build_config.h.i
 
 configure_file(${CMAKE_CURRENT_LIST_DIR}/include/CHIPVersion.h.in
                ${CMAKE_CURRENT_BINARY_DIR}/CHIPVersion.h)
+
+execute_process(
+    COMMAND date "+%s"
+    OUTPUT_VARIABLE BUILD_SECONDS
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+math(EXPR BUILD_SECONDS "${BUILD_SECONDS} - (946684800)")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/FirmwareBuildTime.h "#pragma once\n\n")
+file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/FirmwareBuildTime.h "#define CHIP_DEVICE_CONFIG_FIRMWARE_BUILD_TIME_MATTER_EPOCH_S ${BUILD_SECONDS}\n\n")
 
 # Build Matter OTA image
 if (CONFIG_CHIP_OTA_IMAGE_BUILD)
