@@ -41,7 +41,7 @@ set(SRC_DIRS_LIST "${MATTER_SDK_PATH}/src/access"
                   "${MATTER_SDK_PATH}/src/messaging"
                   "${MATTER_SDK_PATH}/src/platform"
                   "${MATTER_SDK_PATH}/src/platform/ESP32"
-                  "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
+                  # "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
                   # "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid"
                   "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook"
                   "${MATTER_SDK_PATH}/src/platform/OpenThread"
@@ -56,6 +56,7 @@ set(SRC_DIRS_LIST "${MATTER_SDK_PATH}/src/access"
                   "${MATTER_SDK_PATH}/src/tracing"
                   "${MATTER_SDK_PATH}/src/transport"
                   "${MATTER_SDK_PATH}/src/transport/raw"
+                  "${MATTER_SDK_PATH}/third_party/nlfaultinjection/src"
                   "${MATTER_SDK_PATH}/zzz_generated/app-common/app-common/zap-generated")
 
 set(INCLUDE_DIRS_LIST "."
@@ -77,6 +78,7 @@ set(INCLUDE_DIRS_LIST "."
                       # "${MATTER_SDK_PATH}/src/darwin"
                       "${MATTER_SDK_PATH}/src/include"
                       "${MATTER_SDK_PATH}/src/inet"
+                      "${MATTER_SDK_PATH}/src/lib"
                       "${MATTER_SDK_PATH}/src/lib/address_resolve"
                       "${MATTER_SDK_PATH}/src/lib/asn1"
                       "${MATTER_SDK_PATH}/src/lib/core"
@@ -94,8 +96,8 @@ set(INCLUDE_DIRS_LIST "."
                       "${MATTER_SDK_PATH}/src/messaging"
                       "${MATTER_SDK_PATH}/src/platform"
                       "${MATTER_SDK_PATH}/src/platform/ESP32"
-                      "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
                       "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid"
+                      "${MATTER_SDK_PATH}/src/platform/ESP32/nimble"
                       "${MATTER_SDK_PATH}/src/platform/ESP32/route_hook"
                       "${MATTER_SDK_PATH}/src/platform/OpenThread"
                       "${MATTER_SDK_PATH}/src/protocols"
@@ -147,7 +149,6 @@ set(EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/app/icd/ICDEventManager.cpp"
                       "${MATTER_SDK_PATH}/src/lib/support/UnitTestRegistration.cpp"
                       "${MATTER_SDK_PATH}/src/lib/support/UnitTestUtils.cpp"
                       "${MATTER_SDK_PATH}/src/lib/support/JniReferences.cpp"
-                      "${MATTER_SDK_PATH}/src/lib/support/CHIPFaultInjection.cpp"
                       "${MATTER_SDK_PATH}/src/lib/support/CHIPMem-Simple.cpp"
                       "${MATTER_SDK_PATH}/src/lib/shell/MainLoopAmeba.cpp"
                       "${MATTER_SDK_PATH}/src/lib/shell/MainLoopCYW30739.cpp"
@@ -175,7 +176,6 @@ set(EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/app/icd/ICDEventManager.cpp"
                       "${MATTER_SDK_PATH}/src/platform/SyscallStubs.cpp"
                       "${MATTER_SDK_PATH}/src/platform/ESP32/WiFiDnssdImpl.cpp"
                       "${MATTER_SDK_PATH}/src/platform/OpenThread/GenericThreadStackManagerImpl_OpenThread_LwIP.cpp"
-                      "${MATTER_SDK_PATH}/src/system/SystemFaultInjection.cpp"
                       "${MATTER_SDK_PATH}/src/system/SystemLayerImplSelect.cpp"
                       "${MATTER_SDK_PATH}/src/transport/TraceMessage.cpp")
 
@@ -257,7 +257,10 @@ if (CONFIG_BUILD_CHIP_TESTS)
     set(chip_build_tests 1)
 else()
     set(chip_build_tests 0)
-    list(APPEND EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/inet/InetFaultInjection.cpp")
+    list(APPEND EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/inet/InetFaultInjection.cpp"
+                                  "${MATTER_SDK_PATH}/src/lib/support/CHIPFaultInjection.cpp"
+                                  "${MATTER_SDK_PATH}/src/system/SystemFaultInjection.cpp"
+                                  "${MATTER_SDK_PATH}/third_party/nlfaultinjection/src/nlfaultinjection.cpp")
 endif()
 
 if (NOT CONFIG_USE_MINIMAL_MDNS)
@@ -308,12 +311,14 @@ endif()
 if ((CONFIG_BT_ENABLED) AND (CONFIG_ENABLE_CHIPOBLE))
 	if (CONFIG_BT_NIMBLE_ENABLED)
         set(chip_bt_nimble_enabled 1)
+        list(APPEND SRC_DIRS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/nimble")
         list(APPEND EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid/BLEManagerImpl.cpp")
         if(NOT CONFIG_ENABLE_ESP32_BLE_CONTROLLER)
             list(APPEND EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid/ChipDeviceScanner.cpp")
         endif()
     else()
         set(chip_bt_bluedroid_enabled 1)
+        list(APPEND SRC_DIRS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/bluedroid")
         list(APPEND EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/nimble/BLEManagerImpl.cpp")
         if(NOT CONFIG_ENABLE_ESP32_BLE_CONTROLLER)
             list(APPEND EXCLUDE_SRCS_LIST "${MATTER_SDK_PATH}/src/platform/ESP32/nimble/ChipDeviceScanner.cpp"
@@ -438,6 +443,7 @@ target_include_directories(${COMPONENT_LIB} INTERFACE
     "${MATTER_SDK_PATH}/config/esp32/${CONFIG_CHIP_EXTERNAL_PLATFORM_DIR}/../../"
 )
 
+#TODO: Check which lib should be included in chip_libraries for target_link_libraries
 idf_component_get_property(main_lib main COMPONENT_LIB)
 set(chip_libraries $<TARGET_FILE:${main_lib}>)
 
@@ -576,13 +582,13 @@ endif()
 
 if (NOT CMAKE_BUILD_EARLY_EXPANSION)
     if (CONFIG_COMPILER_OPTIMIZATION_DEFAULT OR CONFIG_COMPILER_OPTIMIZATION_NONE)
-        set(is_debug TRUE)
+        set(is_debug 1)
         target_compile_options(${COMPONENT_LIB} PUBLIC "-DLWIP_DEBUG=1")
     else()
         if (NOT CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_DISABLE)
             message(FATAL_ERROR "CONFIG_COMPILER_OPTIMIZATION_ASSERTIONS_DISABLE shall be set")
         endif()
-        set(is_debug FALSE)
+        set(is_debug 0)
     endif()
 endif()
 
