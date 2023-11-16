@@ -1,0 +1,9 @@
+
+#ifndef BLE_BLEBUILDCONFIG_H_
+#define BLE_BLEBUILDCONFIG_H_
+
+#define CONFIG_NETWORK_LAYER_BLE @chip_config_network_layer_ble@
+#define CHIP_ENABLE_CHIPOBLE_TEST 0
+#define BLE_PLATFORM_CONFIG_INCLUDE <platform/ESP32/BlePlatformConfig.h>
+
+#endif  // BLE_BLEBUILDCONFIG_H_
