@@ -15,6 +15,18 @@
 #    limitations under the License.
 #
 
+# See https://github.com/project-chip/connectedhomeip/blob/master/docs/testing/python.md#defining-the-ci-test-arguments
+# for details about the block below.
+#
+# === BEGIN CI TEST ARGUMENTS ===
+# test-runner-runs: run1
+# test-runner-run/run1/app: ${ALL_CLUSTERS_APP}
+# test-runner-run/run1/factoryreset: True
+# test-runner-run/run1/quiet: True
+# test-runner-run/run1/app-args: --discriminator 1234 --KVS kvs1 --trace-to json:${TRACE_APP}.json
+# test-runner-run/run1/script-args: --storage-path admin_storage.json --commissioning-method on-network --discriminator 1234 --passcode 20202021 --trace-to json:${TRACE_TEST_JSON}.json --trace-to perfetto:${TRACE_TEST_PERFETTO}.perfetto --hex-arg PIXIT.CNET.THREAD_1ST_OPERATIONALDATASET:0e08000000000001000035060004001fffe00708fdbca2aedd6919610c0402a0f7f8051000112233445566778899aabbccddeeff030e4f70656e54687265616444656d6f0410445f2b5ca6f2a93a55ce570a70efeecb000300000f0208111111112222222201021234 PIXIT.CNET.WIFI_1ST_ACCESSPOINT_SSID:7769666973736964 PIXIT.CNET.WIFI_1ST_ACCESSPOINT_CREDENTIALS:12345678
+# === END CI TEST ARGUMENTS ===
+
 import logging
 import time
 
@@ -90,6 +102,24 @@ class TC_CNET_4_24(MatterBaseTest):
     @async_test_body
     async def test_TC_CNET_4_24(self):
         self.step("precondition")
+
+        feature_map_response = await self.default_controller.ReadAttribute(self.dut_node_id, [(Clusters.NetworkCommissioning.Attributes.FeatureMap)], fabricFiltered=True)
+        wifi_endpoint = kInvalidEndpointId
+        thread_endpoint = kInvalidEndpointId
+        for endpoint, value in feature_map_response.items():
+            feature_dict = value.get(Clusters.Objects.NetworkCommissioning, {})
+            feature_map = feature_dict.get(Clusters.Objects.NetworkCommissioning.Attributes.FeatureMap, None)
+            if feature_map == kWiFiFeature:
+                wifi_endpoint = endpoint
+            elif feature_map == kThreadFeature:
+                thread_endpoint = endpoint
+            else:
+                continue
+        if wifi_endpoint == kInvalidEndpointId or thread_endpoint == kInvalidEndpointId:
+            logging.info('Should support both Wi-Fi and Thread, skipping remaining steps')
+            self.skip_all_remaining_steps(1)
+            return
+
         asserts.assert_true('PIXIT.CNET.THREAD_1ST_OPERATIONALDATASET' in self.matter_test_config.global_test_params,
                             "PIXIT.CNET.THREAD_1ST_OPERATIONALDATASET must be included on the command line in "
                             "the --hex-arg flag as PIXIT.CNET.THREAD_1ST_OPERATIONALDATASET:<Thread dataset in hex>")
@@ -104,22 +134,6 @@ class TC_CNET_4_24(MatterBaseTest):
                             "PIXIT.CNET.WIFI_1ST_ACCESSPOINT_CREDENTIALS must be included on the command line in "
                             "the --hex-arg flag as PIXIT.CNET.WIFI_1ST_ACCESSPOINT_CREDENTIALS:<Wi-Fi credentials in hex>")
         wifi_credential = self.matter_test_config.global_test_params['PIXIT.CNET.WIFI_1ST_ACCESSPOINT_CREDENTIALS']
-
-        feature_map_response = await self.default_controller.ReadAttribute(self.dut_node_id, [(Clusters.NetworkCommissioning.Attributes.FeatureMap)], fabricFiltered=True)
-
-        wifi_endpoint = kInvalidEndpointId
-        thread_endpoint = kInvalidEndpointId
-        for endpoint, value in feature_map_response.items():
-            feature_dict = value.get(Clusters.Objects.NetworkCommissioning, {})
-            feature_map = feature_dict.get(Clusters.Objects.NetworkCommissioning.Attributes.FeatureMap, None)
-            if feature_map == kWiFiFeature:
-                wifi_endpoint = endpoint
-            elif feature_map == kThreadFeature:
-                thread_endpoint = endpoint
-            else:
-                continue
-        asserts.assert_true(wifi_endpoint != kInvalidEndpointId and thread_endpoint !=
-                            kInvalidEndpointId, "Should support both Wi-Fi and Thread")
 
         self.step(1)
         arm_failsafe_cmd = Clusters.GeneralCommissioning.Commands.ArmFailSafe(expiryLengthSeconds=kExpiryLengthSeconds)
@@ -161,7 +175,7 @@ class TC_CNET_4_24(MatterBaseTest):
         thread_extend_panid = None
         for network in networks_response:
             thread_extend_panid = network.networkID
-        asserts.assert_false(thread_extend_panid == None, "There is no networkID in Networks attribute")
+        asserts.assert_false(thread_extend_panid is None, "There is no networkID in Networks attribute")
 
         self.step(7)
         await self.SendConnectNetworkWithFailure(networkID=thread_extend_panid, endpoint=thread_endpoint)
