@@ -38,6 +38,19 @@ constexpr char kWiFiCredentialsKeyName[] = "wifi-pass";
 static uint8_t WiFiSSIDStr[DeviceLayer::Internal::kMaxWiFiSSIDLength];
 } // namespace
 
+#define DEFAULT_LISTEN_INTERVAL (20)
+// #define DEFAULT_BEACON_TIMEOUT  CONFIG_EXAMPLE_WIFI_BEACON_TIMEOUT
+
+// #if CONFIG_EXAMPLE_POWER_SAVE_MIN_MODEM
+// #define DEFAULT_PS_MODE WIFI_PS_MIN_MODEM
+// #elif CONFIG_EXAMPLE_POWER_SAVE_MAX_MODEM
+// #define DEFAULT_PS_MODE WIFI_PS_MAX_MODEM
+// #elif CONFIG_EXAMPLE_POWER_SAVE_NONE
+// #define DEFAULT_PS_MODE WIFI_PS_NONE
+// #else
+// #define DEFAULT_PS_MODE WIFI_PS_NONE
+// #endif /*CONFIG_POWER_SAVE_MODEM*/
+
 BitFlags<WiFiSecurityBitmap> ConvertSecurityType(wifi_auth_mode_t authMode)
 {
     BitFlags<WiFiSecurityBitmap> securityType;
@@ -224,8 +237,12 @@ CHIP_ERROR ESPWiFiDriver::ConnectWiFiNetwork(const char * ssid, uint8_t ssidLen,
     memcpy(wifiConfig.sta.ssid, ssid, std::min(ssidLen, static_cast<uint8_t>(sizeof(wifiConfig.sta.ssid))));
     memcpy(wifiConfig.sta.password, key, std::min(keyLen, static_cast<uint8_t>(sizeof(wifiConfig.sta.password))));
 
+    wifiConfig.sta.listen_interval = 20;
     // Configure the ESP WiFi interface.
     esp_err_t err = esp_wifi_set_config(WIFI_IF_STA, &wifiConfig);
+    // esp_wifi_set_inactive_time(WIFI_IF_STA, DEFAULT_BEACON_TIMEOUT);
+    // esp_wifi_set_ps(DEFAULT_PS_MODE);
+
     if (err != ESP_OK)
     {
         ChipLogError(DeviceLayer, "esp_wifi_set_config() failed: %s", esp_err_to_name(err));

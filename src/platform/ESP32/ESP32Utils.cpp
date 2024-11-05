@@ -112,6 +112,7 @@ CHIP_ERROR ESP32Utils::StartWiFiLayer(void)
         ChipLogProgress(DeviceLayer, "Starting ESP WiFi layer");
 
         err = esp_wifi_start();
+        printf("esp_wifi_start\r\n");
         if (err != ESP_OK)
         {
             ChipLogError(DeviceLayer, "esp_wifi_start() failed: %s", esp_err_to_name(err));

@@ -48,6 +48,18 @@ using namespace ::chip::Inet;
 using namespace ::chip::System;
 using chip::DeviceLayer::Internal::ESP32Utils;
 
+#define DEFAULT_BEACON_TIMEOUT  CONFIG_EXAMPLE_WIFI_BEACON_TIMEOUT
+
+#if CONFIG_EXAMPLE_POWER_SAVE_MIN_MODEM
+#define DEFAULT_PS_MODE WIFI_PS_MIN_MODEM
+#elif CONFIG_EXAMPLE_POWER_SAVE_MAX_MODEM
+#define DEFAULT_PS_MODE WIFI_PS_MAX_MODEM
+#elif CONFIG_EXAMPLE_POWER_SAVE_NONE
+#define DEFAULT_PS_MODE WIFI_PS_NONE
+#else
+#define DEFAULT_PS_MODE WIFI_PS_NONE
+#endif /*CONFIG_POWER_SAVE_MODEM*/
+
 namespace chip {
 namespace DeviceLayer {
 
@@ -640,6 +652,10 @@ void ConnectivityManagerImpl::DriveStationState()
                 now >= mLastStationConnectFailTime + mWiFiStationReconnectInterval)
             {
                 ChipLogProgress(DeviceLayer, "Attempting to connect WiFi station interface");
+                esp_wifi_set_inactive_time(WIFI_IF_STA, 24);
+                esp_wifi_set_ps(WIFI_PS_MAX_MODEM);
+
+                printf("esp_wifi_connect()\r\n");
                 esp_err_t err = esp_wifi_connect();
                 if (err != ESP_OK)
                 {
