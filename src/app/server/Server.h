@@ -28,6 +28,7 @@
 #include <app/OperationalSessionSetupPool.h>
 #include <app/SimpleSubscriptionResumptionStorage.h>
 #include <app/TestEventTriggerDelegate.h>
+#include <app/codegen-data-model-provider/Instance.h>
 #include <app/server/AclStorage.h>
 #include <app/server/AppDelegate.h>
 #include <app/server/CommissioningWindowManager.h>
@@ -318,6 +319,7 @@ struct CommonCaseDeviceServerInitParams : public ServerInitParams
         }
 #endif
 
+        this->dataModelProvider = app::CodegenDataModelProviderInstance();
         return CHIP_NO_ERROR;
     }
 
