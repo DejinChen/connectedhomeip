@@ -550,6 +550,8 @@ CHIP_ERROR Instance::Read(const ConcreteReadAttributePath & aPath, AttributeValu
         if (mpWirelessDriver != nullptr)
         {
             return aEncoder.Encode(mpWirelessDriver->GetConnectNetworkTimeoutSeconds());
+        } else {
+            return aEncoder.Encode((uint8_t)30);
         }
         return CHIP_NO_ERROR;
 

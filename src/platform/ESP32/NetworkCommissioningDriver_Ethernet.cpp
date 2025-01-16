@@ -17,6 +17,7 @@
 #include "esp_eth.h"
 #include "esp_eth_mac.h"
 #include "esp_eth_phy.h"
+#include "driver/gpio.h"
 #include <platform/ESP32/NetworkCommissioningDriver.h>
 
 using namespace ::chip;
@@ -29,6 +30,11 @@ static void on_eth_event(void * esp_netif, esp_event_base_t event_base, int32_t 
 {
     switch (event_id)
     {
+    case IP_EVENT_ETH_GOT_IP: {
+        ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
+        ChipLogProgress(DeviceLayer, "Ethernet Got IPv4 event. address: " IPSTR, IP2STR(&event->ip_info.ip));
+    }
+    break;
     case ETHERNET_EVENT_CONNECTED: {
         esp_netif_t * eth_netif = (esp_netif_t *) esp_netif;
         ChipLogProgress(DeviceLayer, "Ethernet Connected");
@@ -44,7 +50,7 @@ CHIP_ERROR ESPEthernetDriver::Init(NetworkStatusChangeCallback * networkStatusCh
 {
     /* Currently default ethernet board supported is IP101, if you want to use other types of
      * ethernet board then you can override this function in your application. */
-
+    printf("esp ethernet start\r\n");
     esp_netif_config_t cfg  = ESP_NETIF_DEFAULT_ETH();
     esp_netif_t * eth_netif = esp_netif_new(&cfg);
 
@@ -53,22 +59,52 @@ CHIP_ERROR ESPEthernetDriver::Init(NetworkStatusChangeCallback * networkStatusCh
     eth_phy_config_t phy_config               = ETH_PHY_DEFAULT_CONFIG();
     phy_config.phy_addr                       = CONFIG_ETH_PHY_ADDR;
     phy_config.reset_gpio_num                 = CONFIG_ETH_PHY_RST_GPIO;
-    eth_esp32_emac_config_t esp32_emac_config = ETH_ESP32_EMAC_DEFAULT_CONFIG();
-    esp32_emac_config.smi_mdc_gpio_num        = CONFIG_ETH_MDC_GPIO;
-    esp32_emac_config.smi_mdio_gpio_num       = CONFIG_ETH_MDIO_GPIO;
-    esp_eth_mac_t * mac                       = esp_eth_mac_new_esp32(&esp32_emac_config, &mac_config);
-    esp_eth_phy_t * phy                       = esp_eth_phy_new_ip101(&phy_config);
+    // eth_esp32_emac_config_t esp32_emac_config = ETH_ESP32_EMAC_DEFAULT_CONFIG();
+    // esp32_emac_config.smi_mdc_gpio_num        = CONFIG_ETH_MDC_GPIO;
+    // esp32_emac_config.smi_mdio_gpio_num       = CONFIG_ETH_MDIO_GPIO;
+    // esp_eth_mac_t * mac                       = esp_eth_mac_new_esp32(&esp32_emac_config, &mac_config);
+    // esp_eth_phy_t * phy                       = esp_eth_phy_new_ip101(&phy_config);
+
+    spi_device_interface_config_t spi_devcfg = {
+        .mode = 0,
+        .clock_speed_hz = CONFIG_EXAMPLE_ETH_SPI_CLOCK_MHZ * 1000 * 1000,
+        .spics_io_num = CONFIG_EXAMPLE_ETH_SPI_CS_GPIO,
+        .queue_size = 20
+    };
+    gpio_install_isr_service(0);
+    spi_bus_config_t buscfg = {
+        .mosi_io_num = CONFIG_EXAMPLE_ETH_SPI_MOSI_GPIO,
+        .miso_io_num = CONFIG_EXAMPLE_ETH_SPI_MISO_GPIO,
+        .sclk_io_num = CONFIG_EXAMPLE_ETH_SPI_SCLK_GPIO,
+        .quadwp_io_num = -1,
+        .quadhd_io_num = -1,
+    };
+
+    spi_bus_initialize((spi_host_device_t)CONFIG_EXAMPLE_ETH_SPI_HOST, &buscfg, SPI_DMA_CH_AUTO);
+
+    eth_w5500_config_t w5500_config = ETH_W5500_DEFAULT_CONFIG((spi_host_device_t)CONFIG_EXAMPLE_ETH_SPI_HOST, &spi_devcfg);
+    w5500_config.int_gpio_num = CONFIG_EXAMPLE_ETH_SPI_INT_GPIO;
+    esp_eth_mac_t * mac = esp_eth_mac_new_w5500(&w5500_config, &mac_config);
+    phy_config.phy_addr = CONFIG_EXAMPLE_ETH_PHY_ADDR;
+    phy_config.reset_gpio_num = CONFIG_EXAMPLE_ETH_PHY_RST_GPIO;
+    esp_eth_phy_t * phy                       = esp_eth_phy_new_w5500(&phy_config);
 
     esp_eth_config_t config     = ETH_DEFAULT_CONFIG(mac, phy);
     esp_eth_handle_t eth_handle = NULL;
     ESP_ERROR_CHECK(esp_eth_driver_install(&config, &eth_handle));
+
+    uint8_t addr[] =  {
+        0x02, 0x00, 0x00, 0x12, 0x34, 0x56
+    };
+    esp_eth_ioctl(eth_handle, ETH_CMD_S_MAC_ADDR, addr);
+
     /* attach Ethernet driver to TCP/IP stack */
     ESP_ERROR_CHECK(esp_netif_attach(eth_netif, esp_eth_new_netif_glue(eth_handle)));
 
     ESP_ERROR_CHECK(esp_event_handler_register(ETH_EVENT, ETHERNET_EVENT_CONNECTED, &on_eth_event, eth_netif));
 
     ESP_ERROR_CHECK(esp_eth_start(eth_handle));
-
+    printf("esp ethernet started\r\n");
     return CHIP_NO_ERROR;
 }
 

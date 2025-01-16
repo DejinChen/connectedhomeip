@@ -2360,18 +2360,15 @@ CHIP_ERROR DeviceCommissioner::ParseCommissioningInfo1(ReadCommissioningInfo & i
                 return CHIP_NO_ERROR;
             }
             ConnectMaxTimeSeconds::TypeInfo::DecodableArgType time;
-            ReturnErrorOnFailure(this->mAttributeCache->Get<ConnectMaxTimeSeconds::TypeInfo>(path, time));
             if (path.mEndpointId == info.network.wifi.endpoint)
             {
+                ReturnErrorOnFailure(this->mAttributeCache->Get<ConnectMaxTimeSeconds::TypeInfo>(path, time));
                 info.network.wifi.minConnectionTime = time;
             }
             else if (path.mEndpointId == info.network.thread.endpoint)
             {
+                ReturnErrorOnFailure(this->mAttributeCache->Get<ConnectMaxTimeSeconds::TypeInfo>(path, time));
                 info.network.thread.minConnectionTime = time;
-            }
-            else if (path.mEndpointId == info.network.eth.endpoint)
-            {
-                info.network.eth.minConnectionTime = time;
             }
             return CHIP_NO_ERROR;
         });
